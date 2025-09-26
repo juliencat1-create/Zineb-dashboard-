@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Nutritionnel - Zineb</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .anthropometry {
+            text-align: center;
+        }
+        
+        .anthropometry h3 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .stat {
+            margin-bottom: 15px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .imc-card {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .imc-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .energy-section {
+            text-align: center;
+        }
+        
+        .energy-boxes {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .energy-box {
+            flex: 1;
+            padding: 20px 15px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+        }
+        
+        .energy-current {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .energy-target {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .energy-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .energy-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+        
+        .macros-section {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .macros-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .macros-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .macro-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .macro-name {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+        
+        .macro-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        
+        .objectives {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #2d3748;
+        }
+        
+        .objectives h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .objective-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+        }
+        
+        .objective-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-size: 0.8rem;
+        }
+        
+        .special-considerations {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 15px;
+            border-left: 5px solid #ff6b9d;
+        }
+        
+        .special-considerations h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .considerations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .consideration-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .consideration-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+        
+        .consideration-content {
+            font-size: 0.9rem;
+            color: #4a5568;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .energy-boxes {
+                flex-direction: column;
+            }
+            
+            .macros-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .considerations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Zineb</h1>
+            <div class="subtitle">Améliorer le confort digestif et optimiser l'équilibre nutritionnel</div>
+        </div>
+        
+        <div class="grid">
+            <!-- Anthropométrie -->
+            <div class="card anthropometry">
+                <h3>📊 Anthropométrie</h3>
+                <div class="stat">
+                    <span class="stat-value">168</span>
+                    <span class="stat-label">cm - Taille</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">55</span>
+                    <span class="stat-label">kg - Poids</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">37</span>
+                    <span class="stat-label">ans</span>
+                </div>
+                <div class="imc-card">
+                    <div class="imc-value">19,5</div>
+                    <div>IMC - NORMAL</div>
+                </div>
+            </div>
+            
+            <!-- Besoins énergétiques et macros -->
+            <div class="card energy-section">
+                <div class="energy-boxes">
+                    <div class="energy-box energy-current">
+                        <div class="energy-value">1900-2100</div>
+                        <div class="energy-label">DET KCAL/J</div>
+                    </div>
+                    <div class="energy-box energy-target">
+                        <div class="energy-value">2000-2200</div>
+                        <div class="energy-label">OBJECTIF KCAL/J</div>
+                    </div>
+                </div>
+                
+                <div class="macros-section">
+                    <div class="macros-title">Objectifs Macronutriments</div>
+                    <div class="macros-grid">
+                        <div class="macro-card">
+                            <div class="macro-name">PROTÉINES</div>
+                            <div class="macro-value">90-100g/j</div>
+                        </div>
+                        <div class="macro-card">
+                            <div class="macro-name">GLUCIDES</div>
+                            <div class="macro-value">220-250g/j</div>
+                        </div>
+                        <div class="macro-card">
+                            <div class="macro-name">LIPIDES</div>
+                            <div class="macro-value">70-85g/j</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Objectifs -->
+            <div class="card objectives">
+                <h3>🎯 Objectifs</h3>
+                <div class="objective-item">
+                    <div class="objective-icon">🏥</div>
+                    <div>
+                        <div style="font-weight: 600;">Confort digestif</div>
+                        <div style="font-size: 0.8rem;">Réduire ballonnements et troubles transit</div>
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <div class="objective-icon">💪</div>
+                    <div>
+                        <div style="font-weight: 600;">Masse musculaire</div>
+                        <div style="font-size: 0.8rem;">Maintenir/développer</div>
+                    </div>
+                </div>
+                <div class="objective-item">
+                    <div class="objective-icon">⚖️</div>
+                    <div>
+                        <div style="font-weight: 600;">Équilibre nutritionnel</div>
+                        <div style="font-size: 0.8rem;">Optimiser apports protéiques</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="special-considerations">
+            <h3>⚠️ Considérations Spéciales</h3>
+            <div class="considerations-grid">
+                <div class="consideration-item">
+                    <div class="consideration-title">🚫 Aliments à éviter</div>
+                    <div class="consideration-content">
+                        Produits laitiers (lait de vache), pain complet, maïs, poivrons, aliments gras en excès
+                    </div>
+                </div>
+                <div class="consideration-item">
+                    <div class="consideration-title">✅ Aliments tolérés</div>
+                    <div class="consideration-content">
+                        Fromages à pâte dure, feta, aubergines, quinoa, riz, patate douce, sarrasin
+                    </div>
+                </div>
+                <div class="consideration-item">
+                    <div class="consideration-title">🌿 Fibres prioritaires</div>
+                    <div class="consideration-content">
+                        Privilégier fibres solubles (avoine sans gluten, psyllium) vs insolubles. Objectif: 20-25g/j progressivement
+                    </div>
+                </div>
+                <div class="consideration-item">
+                    <div class="consideration-title">⏰ Rythme alimentaire</div>
+                    <div class="consideration-content">
+                        Pas de petit-déjeuner (jeûne intermittent naturel), déjeuner principal 12h-14h, dîner léger 19h-20h
+                    </div>
+                </div>
+                <div class="consideration-item">
+                    <div class="consideration-title">🥗 Mode alimentaire</div>
+                    <div class="consideration-content">
+                        Flexitarienne - Sources protéiques: œufs, poisson, légumineuses digestes. Surveillance B12 et fer nécessaire
+                    </div>
+                </div>
+                <div class="consideration-item">
+                    <div class="consideration-title">💊 Micronutriments clés</div>
+                    <div class="consideration-content">
+                        Zinc (8-10mg), Vitamine D (surveillance), Magnésium (300-350mg), Probiotiques naturels
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
